@@ -1,0 +1,15 @@
+package alma;
+
+class Cica 
+{
+	void run()
+	{
+		rtout.append("Hello Kitty!\n");
+		rtout.append("Hello Kitty!");
+		rtout.append("cica Kitty!");
+			rtout.append("cica Kitty!");
+		cica=15; //NB
+cica=15; //NB
+		rtout.append("Bello kitty!");
+	}
+}

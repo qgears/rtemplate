@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="Builder"
+         name="RT Template compiler builder"
+         point="org.eclipse.core.resources.builders">
+      <builder>
+         <run
+               class="hu.qgears.rtemplate.builder.TemplateBuilder">
+         </run>
+        </builder>
+   </extension>
+   <extension
+         id="FileListBuilder"
+         name="File list creator"
+         point="org.eclipse.core.resources.builders">
+      <builder>
+         <run
+               class="hu.qgears.rtemplate.flist.FileListBuilder">
+         </run>
+        </builder>
+   </extension>
+    <extension
+       point="org.eclipse.ui.popupMenus">
+    <objectContribution
+          adaptable="false"
+          id="hu.rtemplate.javaToTemplate"
+          objectClass="org.eclipse.core.runtime.PlatformObject">
+       <action
+             class="hu.qgears.rtemplate.action.JavaToTemplateAction"
+             id="hu.rtemplate.javaToTemplate"
+             label="Compile Java to template"
+             menubarPath="hu.rtemplate.menu/group1">
+       </action>
+       <menu
+             id="hu.rtemplate.menu"
+             label="RTemplate"
+             path="additions">
+       </menu>
+       <action
+             class="hu.qgears.rtemplate.action.TemplateToJavaAction"
+             id="hu.rtemplate.templateToJjava"
+             label="Compile template to Java"
+             menubarPath="hu.rtemplate.menu/group1">
+       </action>
+       <action
+             class="hu.qgears.rtemplate.action.ConvertProjectToTemplate"
+             id="hu.rtemplate.convertProjectToTemplate"
+             label="Convert project to RTemplate"
+             menubarPath="hu.rtemplate.menu/group1">
+       </action>
+       <action
+             class="hu.qgears.rtemplate.action.ConvertProjectFromTemplate"
+             id="hu.rtemplate.convertProjectFromTemplate"
+             label="Convert RTemplate project to simple project"
+             menubarPath="hu.rtemplate.menu/group1">
+       </action>
+       <action
+             class="hu.qgears.rtemplate.action.ConvertProjectToFileList"
+             id="hu.rtemplate.convertProjectToFileList"
+             label="Add File List Manager to project"
+             menubarPath="hu.rtemplate.menu/group1">
+       </action>
+       <action
+             class="hu.qgears.rtemplate.action.ConvertProjectFromFileList"
+             id="hu.rtemplate.convertProjectFromFileList"
+             label="Remove File List Manager from project"
+             menubarPath="hu.rtemplate.menu/group1">
+       </action>
+       <action
+             class="hu.qgears.rtemplate.action.ActionBrowsePair"
+             id="hu.rtemplate.actionBrowsePairObject"
+             label="Browse To Pair"
+             menubarPath="hu.rtemplate.menu/group1">
+       </action>
+    </objectContribution>
+ </extension>
+ <extension
+     point="org.eclipse.ui.editors">
+  <editor
+        name="RTemplate Editor"
+        extensions="rt"
+        icon="icons/sample.gif"
+        contributorClass="hu.qgears.rtemplate.editor.RTemplateEditorContributor"
+        class="hu.qgears.rtemplate.editor.RTemplateEditor"
+        id="hu.rtemplate.editor.RTemplateEditor">
+  </editor>
+ </extension>
+</plugin>
