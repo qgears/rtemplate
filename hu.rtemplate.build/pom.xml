@@ -1,0 +1,70 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven build job for building a P2 repository from R-Template 
+		The generated repository depends on Eclipse indigo 
+		repositories, and they are also required during 
+		build (see repository URL-s).
+		 -->
+	<modelVersion>4.0.0</modelVersion>
+    <groupId>hu.rtemplate.group</groupId>
+    <artifactId>rtemplate</artifactId>
+	<version>0.9.9-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<osgi.os>linux</osgi.os>
+		<osgi.ws>gtk</osgi.ws>
+		<osgi.arch>x86_64</osgi.arch>
+		<tycho-version>0.20.0</tycho-version>
+	</properties>
+    <repositories>
+		<repository>
+		<id>indigo-mirror</id>
+		<layout>p2</layout>
+		<url>${eclipseRepoUrl}</url>
+		</repository>
+	</repositories>
+	<modules>
+		<module>../hu.rtemplate</module>
+	 	<module>p2</module>
+	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<!--enabling source bundle generation-->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+   </build>
+</project>
