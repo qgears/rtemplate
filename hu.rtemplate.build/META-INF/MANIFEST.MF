@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Rtemplate P2 repository plugin
-Bundle-SymbolicName: hu.rtemplate.build
-Bundle-Version: 0.9.9.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7

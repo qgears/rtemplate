@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <bundle id="hu.rtemplate" version="0.9.9.qualifier">
-      <category name="hu.rtemplate.category"/>
-   </bundle>
-   <category-def name="hu.rtemplate.category" label="R-Template"/>
-</site>

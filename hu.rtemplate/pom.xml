@@ -3,12 +3,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>hu.rtemplate.group</groupId>
-    <artifactId>rtemplate</artifactId>
-    <version>0.9.9-SNAPSHOT</version>
-    <relativePath>../hu.rtemplate.build</relativePath>
+    <groupId>hu.qgears</groupId>
+    <artifactId>root</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../parent-poms/root</relativePath>
   </parent>
-  <groupId>hu.rtemplate.group</groupId>
+  <groupId>hu.qgears</groupId>
   <artifactId>hu.rtemplate</artifactId>
   <version>0.9.9-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
