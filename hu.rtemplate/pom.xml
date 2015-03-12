@@ -10,6 +10,6 @@
   </parent>
   <groupId>hu.qgears</groupId>
   <artifactId>hu.rtemplate</artifactId>
-  <version>0.9.9-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>eclipse-plugin</packaging>
 </project>
