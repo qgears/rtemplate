@@ -1,6 +1,6 @@
 # rtemplate
 
-RTemplate is a simple template language. It is mainly used in Java to implement code generators and simple HTML generators.
+RTemplate is a simple template language with an Eclipse based editor. It is mainly used in Java to implement code generators and simple HTML generators.
 
 ![Screenshot of RTemplate editor in Eclipse](screenshots/usage-overview.png "Screenshot of RTemplate editor in Eclipse")
 
