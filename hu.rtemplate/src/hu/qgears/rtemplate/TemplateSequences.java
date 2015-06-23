@@ -63,11 +63,13 @@ public class TemplateSequences {
 	 */
 	public List<RTemplateTagType> tagTypes=new ArrayList<RTemplateTagType>();
 	
+	/**
+	 * Suffix of source code files.
+	 */
 	public String codeFileNameSuffix=".java";
 	/**
 	 * Check whether the filename matches our filter and it is 
 	 * a templatable file.
-	 * TODO current implementation only supports .java files 
 	 * @param f
 	 * @return
 	 */
