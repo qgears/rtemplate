@@ -32,6 +32,9 @@ RTemplate is a simple template language. It is mainly used in Java to implement 
  * Select Q-Gears tools/RTemplate
  * This installs the hu.rtemplate plugin into your Eclipse instance
 
+![Install add repository](screenshots/install-add-repository.png "Install add repository")
+![Install select RTemplate](screenshots/install-select-rtemplate.png "Install select RTemplate")
+
 ## Usage
  * Convert your Java project into an RTemplate project:
   * In project context menu select RTemplate/Convert project to RTemplate
@@ -42,6 +45,8 @@ RTemplate is a simple template language. It is mainly used in Java to implement 
 javaDir=src
 templateDir=template
 ```
+![Install create configuration](screenshots/install-create-configuration.png "Install create configuration")
+
  * Create the template view of your Java source code:
   * When a Java file is saved then the Eclipse builder automatically creates the template view of that file.
   * project context menu/RTemplate/Convert Java to template batch converts all Java source to its template version
@@ -50,6 +55,10 @@ templateDir=template
   * alternatively browse it from the Package Exporer
  * Edit the template file:
   * Saving the template file triggers the builder that overwrites the original Java source file with the version translated from the template source.
+
+
+![Hello World example](screenshots/usage-helloworld.png "Hello World example")
+
 
 ## Abstract template base class
  * It is recommended to use an abstract base class for template classes that implements the basic functionality of the template classes.
@@ -69,7 +78,9 @@ jOutPre=writeObject(out,
 jOutPost=);
 ```
  * Parameters documentation: https://github.com/qgears/rtemplate/blob/master/hu.rtemplate/src/hu/qgears/rtemplate/TemplateSequences.java
- * TODO image of C example
+
+![C language example](screenshots/usage-c.png "C language example")
+
 
 ## Using custom tags
  * The template can be extended with custom tags that are compiled to and from custom Java lines that are specific to your project.
@@ -85,7 +96,8 @@ jPre0=writeHtml(
 jPost0=);
 ```
  * The custom tag is now translated to and from the custom method call in Java.
- * TODO image of HTML example
+![HTML emitting example](screenshots/usage-html.png "HTML emitting example")
+
 
 
 
