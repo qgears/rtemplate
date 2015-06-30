@@ -19,6 +19,7 @@ RTemplate is a simple template language with an Eclipse based editor. It is main
   * Builder transforms template view to source code and source code to template view when the file is saved.
   * Refactor support: all refactoring implemented in Eclipse works with template files
  * Template files are simple Java source code. Minor fixes in templates can be done without rtemplate installed. The template view version of the source is normally not version controlled but is an editing time artifact only. We set up the template files to be ignored by the version control system.
+ * autoTab (since version 2.0): tabulation of template writing lines in Java source file is automatic
 
 
 ## Caveats
@@ -98,6 +99,22 @@ jPost0=);
  * The custom tag is now translated to and from the custom method call in Java.
 ![HTML emitting example](screenshots/usage-html.png "HTML emitting example")
 
+
+## Auto tabulation of Java template source code (since version 2.0)
+
+ * In rtemplate.conf the autoTab=true property must be added
+ * The #Tx# like tags are omitted from the template code
+ * When converting the template lines to Java the following rules are used to determine correct indenting:
+   * Normally the indenting (number of tabulators on the line prefix) of the previous line is used for template output lines in Java source generation
+   * When a line ends with '{' (ignoring whitespaces but not ignoring comments) then the indenting is incremented by one
+ * Example rtemplate.conf file:
+```
+javaDir=src
+templateDir=template
+jTemplatePre=write("
+jOutPre=writeObject(
+autoTab=true
+```
 
 
 

@@ -1,7 +1,6 @@
 package hu.qgears.rtemplate.builder;
 
 import hu.qgears.rtemplate.RTemplate;
-import hu.qgears.rtemplate.RTemplateTagType;
 import hu.qgears.rtemplate.TemplateSequences;
 import hu.qgears.rtemplate.internal.Activator;
 import hu.qgears.rtemplate.util.UtilFile;
@@ -11,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Properties;
 
@@ -277,7 +275,7 @@ public class RTemplateBuilder {
 				}
 				javaDir = props.getProperty("javaDir");
 				templateDir = props.getProperty("templateDir");
-				sequences=loadProperties(props);
+				sequences=TemplateSequences.parseProperties(props);
 			} catch (Exception e) {
 				addError(f, "Error parsing as properties file: "
 						+ e.getMessage());
@@ -304,46 +302,6 @@ public class RTemplateBuilder {
 			}
 		}
 		return newConfState;
-	}
-	private TemplateSequences loadProperties(Properties props) throws IllegalArgumentException, IllegalAccessException {
-		TemplateSequences sequences=new TemplateSequences();
-		Field[] fields=sequences.getClass().getFields();
-		for(Field f:fields)
-		{
-			if(String.class.equals(f.getType()))
-			{
-				String name=f.getName();
-				Object value=props.get(name);
-				if(value!=null)
-				{
-					f.set(sequences, ""+value);
-				}
-			}
-		}
-		int i=0;
-		RTemplateTagType type;
-		while((type=parseTagType(props, i))!=null)
-		{
-			sequences.tagTypes.add(type);
-			i++;
-		}
-		return sequences;
-	}
-
-	private RTemplateTagType parseTagType(Properties props, int i) {
-		String jPre=props.getProperty("jPre"+i);
-		String jPost=props.getProperty("jPost"+i);
-		String tPre=props.getProperty("tPre"+i);
-		String tPost=props.getProperty("tPost"+i);
-		if(notEmpty(jPre)&&notEmpty(jPost)&&
-				notEmpty(tPre)&&notEmpty(tPost))
-		{
-			return new RTemplateTagType(jPre, jPost, tPre, tPost);
-		}
-		return null;
-	}
-	private boolean notEmpty(String post) {
-		return post!=null&&post.length()>0;
 	}
 	public void checkRtConf() throws CoreException {
 		ConfState newConfState=loadConfiguration(getProject());

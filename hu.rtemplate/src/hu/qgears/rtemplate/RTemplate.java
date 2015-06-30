@@ -100,7 +100,7 @@ public class RTemplate {
 	private void printPrefixTabsNumberIfNecessary(
 			int prefixTabs,
 			StringBuilder ret) {
-		if (prefixTabs != lastTemplatePrefixTabs) {
+		if (prefixTabs != lastTemplatePrefixTabs&&!sequences.autoTab) {
 			lastTemplatePrefixTabs = prefixTabs;
 			ret.append(sequences.tTagTabs);
 			ret.append(prefixTabs);
@@ -145,7 +145,7 @@ public class RTemplate {
 	 * @param line
 	 * @return the number of tabs as prefix on the line.
 	 */
-	int getPrefixTabs(String line) {
+	private int getPrefixTabs(String line) {
 		int ptr = 0;
 		int l = line.length();
 		while (l > ptr && line.charAt(ptr) == '\t') {
@@ -174,14 +174,18 @@ public class RTemplate {
 				ret.append(EscapeString.escapeJava(part.getContent()));
 				ret.append(sequences.jTemplatePost);
 				ret.append("\n");
-			} else if (part instanceof LinePartSetTabsPrefix) {
+			} else if (part instanceof LinePartSetTabsPrefix && !sequences.autoTab) {
 				currentPrefixTabs = ((LinePartSetTabsPrefix) part).newTab;
 			} else if (part instanceof LinePartCode) {
 				if (!((LinePartCode) part).isAlradyPrefixed) {
 					for (int i = 0; i < currentPrefixTabs; ++i) {
 						ret.append('\t');
 					}
+				}else if(sequences.autoTab)
+				{
+					currentPrefixTabs=getPrefixTabs(part.content);
 				}
+				currentPrefixTabs=incrementPrefixTabsIfBracketOpen(currentPrefixTabs, part.content);
 				ret.append(part.content + "\n");
 			} else if (part instanceof LinePartCustom)
 			{
@@ -206,6 +210,22 @@ public class RTemplate {
 		return ret.toString();
 	}
 	
+	private int incrementPrefixTabsIfBracketOpen(int currentPrefixTabs,
+			String line) {
+		if(sequences.autoTab)
+		{
+			int ptr = line.length()-1;
+			while (ptr>=0 && Character.isWhitespace(line.charAt(ptr))) {
+				ptr--;
+			}
+			if(ptr>=0 && line.charAt(ptr)=='{')
+			{
+				currentPrefixTabs++;
+			}
+		}
+		return currentPrefixTabs;
+	}
+
 	public List<LinePart> parseTemplate(String temp)
 	{
 		List<Integer> lineIndexes=new ArrayList<Integer>();
@@ -268,7 +288,7 @@ public class RTemplate {
 	 * @param from
 	 * @return
 	 */
-	List<LinePart> parseLine(String line, int from) {
+	private List<LinePart> parseLine(String line, int from) {
 		line = line + "\n";
 		List<LinePart> ret = new ArrayList<LinePart>();
 		int lastPartEnd = 0;

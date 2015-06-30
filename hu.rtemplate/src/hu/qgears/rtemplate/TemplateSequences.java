@@ -1,8 +1,10 @@
 package hu.qgears.rtemplate;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Escape sequence constants for template compilation.
@@ -68,6 +70,10 @@ public class TemplateSequences {
 	 */
 	public String codeFileNameSuffix=".java";
 	/**
+	 * Do automatic tabulation of source code (will omit #Tx# tags from the template side)
+	 */
+	public boolean autoTab=false;
+	/**
 	 * Check whether the filename matches our filter and it is 
 	 * a templatable file.
 	 * @param f
@@ -75,5 +81,59 @@ public class TemplateSequences {
 	 */
 	public boolean fileNameMatches(File f) {
 		return f.getName().endsWith(codeFileNameSuffix);
+	}
+	public static TemplateSequences parseProperties(Properties props) throws IllegalArgumentException, IllegalAccessException {
+		TemplateSequences sequences=new TemplateSequences();
+		Field[] fields=sequences.getClass().getFields();
+		for(Field f:fields)
+		{
+			if(String.class.equals(f.getType()))
+			{
+				String name=f.getName();
+				Object value=props.get(name);
+				if(value!=null)
+				{
+					f.set(sequences, ""+value);
+				}
+			}
+			if(boolean.class.equals(f.getType()))
+			{
+				String name=f.getName();
+				Object value=props.get(name);
+				if(value!=null)
+				{
+					f.set(sequences, Boolean.parseBoolean(""+value));
+				}
+			}
+		}
+		int i=0;
+		RTemplateTagType type;
+		while((type=parseTagType(props, i))!=null)
+		{
+			sequences.tagTypes.add(type);
+			i++;
+		}
+		return sequences;
+	}
+	/**
+	 * Parse a custom tag type from a templates configuration file.
+	 * @param props
+	 * @param i
+	 * @return
+	 */
+	static private RTemplateTagType parseTagType(Properties props, int i) {
+		String jPre=props.getProperty("jPre"+i);
+		String jPost=props.getProperty("jPost"+i);
+		String tPre=props.getProperty("tPre"+i);
+		String tPost=props.getProperty("tPost"+i);
+		if(notEmpty(jPre)&&notEmpty(jPost)&&
+				notEmpty(tPre)&&notEmpty(tPost))
+		{
+			return new RTemplateTagType(jPre, jPost, tPre, tPost);
+		}
+		return null;
+	}
+	static private boolean notEmpty(String post) {
+		return post!=null&&post.length()>0;
 	}
 }
