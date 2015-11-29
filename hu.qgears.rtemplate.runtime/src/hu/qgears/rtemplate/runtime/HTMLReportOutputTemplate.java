@@ -40,7 +40,7 @@ public class HTMLReportOutputTemplate extends RAbstractTemplatePart
 			write("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<style>\n");
 			TextWithTooltipLinks.generateCSS(templateState.out);
 			TextWithTooltipLinks.generateScripts(templateState.out);
-			write("</style>\n<title>");
+			write("\n<title>");
 			writeObject(title);
 			write("</title>\n</head>\n<body>\n<h1>");
 			writeObject(title);

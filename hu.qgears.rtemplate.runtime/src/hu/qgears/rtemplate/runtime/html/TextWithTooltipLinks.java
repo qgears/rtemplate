@@ -2,6 +2,7 @@ package hu.qgears.rtemplate.runtime.html;
 
 import hu.qgears.commons.EscapeString;
 import hu.qgears.commons.MultiMapTreeImpl;
+import hu.qgears.commons.UtilString;
 import hu.qgears.rtemplate.runtime.DummyCodeGeneratorContext;
 import hu.qgears.rtemplate.runtime.RAbstractTemplatePart;
 
@@ -22,6 +23,7 @@ import java.util.List;
  */
 public class TextWithTooltipLinks extends RAbstractTemplatePart
 {
+	private int lineNumber=1;
 	private String src;
 	private MultiMapTreeImpl<Integer, DecorationData> decorations=new MultiMapTreeImpl<>();
 	private MultiMapTreeImpl<Integer, DecorationData> endings=new MultiMapTreeImpl<>();
@@ -54,7 +56,7 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 	}
 	private void generateScripts_(StringBuilder output) throws IOException {
 		templateState.out=output;
-		write("<script>\nfunction toggle(elementId, toggleButtonId) {\n\tvar ele = document.getElementById(elementId);\n\tif(ele.style.display == \"block\") {\n\t\tele.style.display = \"none\";\n\t}\n\telse {\n\t\tele.style.display = \"block\";\n\t}\n\tvar s = document.getElementById(toggleButtonId).innerHTML;\n\tif (s.search(\"show\") > 0) {\n\t\ts = s.replace(\"show\",\"hide\");\n\t} else {\n\t\ts = s.replace(\"hide\",\"show\");\n\t}\n\tdocument.getElementById(toggleButtonId).innerHTML = s;\n}\n</script>\n<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js\"></script><script>\t$(function() {\t\t$('.tooltipButton').click(function(){\t\t\tvar visible = $(this).next().is(':visible');\t\t\t$('.tooltipContent').hide();\t\t\tif (visible) {\t\t  \t\t$(this).next().hide();\t\t\t} else {\t\t\t\t$(this).next().show();\t\t\t}\t\t});\t\t$('.tooltipClose').click(function(){\t\t\t$(this).parent().hide();\t\t});\t});</script>\n");
+		write("<script>\nfunction toggle(elementId, toggleButtonId) {\n\tvar ele = document.getElementById(elementId);\n\tif(ele.style.display == \"block\") {\n\t\tele.style.display = \"none\";\n\t}\n\telse {\n\t\tele.style.display = \"block\";\n\t}\n\tvar s = document.getElementById(toggleButtonId).innerHTML;\n\tif (s.search(\"show\") > 0) {\n\t\ts = s.replace(\"show\",\"hide\");\n\t} else {\n\t\ts = s.replace(\"hide\",\"show\");\n\t}\n\tdocument.getElementById(toggleButtonId).innerHTML = s;\n}\n</script>\n<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js\"></script>\n<script>\n\t$(function()\n\t{\n\t\t$('.tooltipButton').click(function(){\n\t\t\tvar visible = $(this).next().is(':visible');\n\t\t\t$('.tooltipContent').hide();\n\t\t\tif (visible) {\n\t\t\t\t$(this).next().hide();\n\t\t\t} else {\n\t\t\t\t$(this).next().show();\n\t\t\t}\n\t\t});\n\t\t$('.tooltipClose').click(\n\t\t\tfunction()\n\t\t\t{\n\t\t\t\tvar a=$(this).closest('div[class^=\"tooltipContent\"]');\n\t\t\t\ta.hide();\n\t\t\t});\n\t});\n</script>\n");
 	}
 	/**
 	 * Generate the CSS scripts that drive the popup window implementation of the
@@ -80,8 +82,10 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 	 */
 	public void generateString(StringBuilder output) throws IOException
 	{
+		lineNumber=1;
 		templateState.out=output;
 		write("<pre>");
+		printLineNumberAndIncrement();
 		for(int i=0;i<src.length();++i)
 		{
 			doEnding(i);
@@ -107,6 +111,10 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 				EscapeString.escapeHtml(output, "¶");
 			}
 			EscapeString.escapeHtml(output, ""+c);
+			if(c=='\n')
+			{
+				printLineNumberAndIncrement();
+			}
 		}
 		// Finish unclosed tags
 		for(Integer key:endings.keySet())
@@ -114,6 +122,11 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 			doEnding(key);
 		}
 		write("</pre>");
+	}
+	private void printLineNumberAndIncrement() {
+		writeObject(UtilString.padLeft(""+lineNumber, 5, '0'));
+		write("|");
+		lineNumber++;
 	}
 	private void doEnding(int i) throws IOException {
 		List<DecorationData> l=endings.get(i);
@@ -123,7 +136,7 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 		}
 	}
 	private void doEnding(DecorationData d) throws IOException {
-		write("</a><div class=\"tooltipContent\" style=\"display: none\">");
+		write("</a><div class=\"tooltipContent tooltipClose\" style=\"display: none\">");
 		writeObject(""+d.html);
 		write("<br/><br/><a class=\"tooltipClose\">Close</a></div></span>");
 	}

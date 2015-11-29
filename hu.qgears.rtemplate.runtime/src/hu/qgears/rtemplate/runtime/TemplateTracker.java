@@ -13,6 +13,10 @@ import java.util.List;
  *
  */
 public class TemplateTracker {
+	public TemplateTracker()
+	{
+		
+	}
 	public List<DecorationData> decorations=new ArrayList<DecorationData>();
 	private String postfix="";
 	/**
@@ -26,14 +30,15 @@ public class TemplateTracker {
 		for(int i=skipN; i<sts.length;++i)
 		{
 			StackTraceElement ste=sts[i];
-			ttLog.append(ste.getClassName());
-			ttLog.append("(<a href=\"");
+			ttLog.append("<a href=\"");
 			ttLog.append("eclipse://java/"+ste.getClassName()+"/"+ste.getLineNumber());
 			ttLog.append("\">");
-			ttLog.append(ste.getFileName());
+			ttLog.append(ste.getClassName());
+			ttLog.append(".");
+			ttLog.append(ste.getMethodName());
 			ttLog.append(": ");
 			ttLog.append(""+ste.getLineNumber());
-			ttLog.append("</a>)<br/>\n");
+			ttLog.append("</a><br/>\n");
 		}
 	}
 	/**

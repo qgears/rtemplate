@@ -57,7 +57,7 @@ abstract public class RAbstractTemplatePart {
 	 * @param string
 	 */
 	protected final void write(String string) {
-		templateState.out.append(string);
+		templateState.append(string);
 		if(templateState.tt!=null)
 		{
 			templateState.tt.track(templateState.out.length(), string);
@@ -70,7 +70,7 @@ abstract public class RAbstractTemplatePart {
 	 */
 	protected final void writeObject(Object o) {
 		String string=""+o;
-		templateState.out.append(string);
+		templateState.append(string);
 		if(templateState.tt!=null)
 		{
 			templateState.tt.track(templateState.out.length(), string);

@@ -23,10 +23,24 @@ public class TemplateState {
 	 * It is a debug only feature.
 	 * See {@link TemplateTracker}
 	 */
-	public TemplateTracker tt=new TemplateTracker();
+	public TemplateTracker tt;
 	/**
 	 * {@link DeferredTemplate} parts that are executed after all other code generation was done
 	 * but their output is inserted to the position where they were created.
 	 */
 	public List<DeferredTemplate> deferredParts=new ArrayList<>();
+	public void append(String string) {
+		out.append(string);
+		String a=null;
+		// TODO  breakpoint at a specific state of the output
+		if(a!=null&&out.length()>a.length())
+		{
+			String b=out.substring(out.length()-a.length());
+			if(b.equals(a))
+			{
+				System.out.println("***********");
+			}
+		}
+		// TODO Auto-generated method stub
+	}
 }
