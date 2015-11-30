@@ -8,5 +8,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<packaging>pom</packaging>
 	<modules>
 		<module>hu.rtemplate</module>
+		<module>hu.qgears.rtemplate.runtime</module>
 	</modules>
 </project>
