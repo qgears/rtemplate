@@ -1,6 +1,5 @@
 package hu.qgears.rtemplate.runtime;
 
-import java.util.function.Consumer;
 
 /**
  * Generate code as template.
