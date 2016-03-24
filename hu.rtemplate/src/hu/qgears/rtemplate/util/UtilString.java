@@ -36,7 +36,7 @@ public class UtilString {
 	public static List<String> split(String s, String delim)
 	{
 		List<String> ret=new ArrayList<String>();
-		StringTokenizer tok=new StringTokenizer(s);
+		StringTokenizer tok=new StringTokenizer(s, delim);
 		while(tok.hasMoreTokens())
 		{
 			ret.add(tok.nextToken());
