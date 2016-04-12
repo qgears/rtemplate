@@ -95,7 +95,13 @@ tPre0=#H
 tPost0=#
 jPre0=writeHtml(
 jPost0=);
+color0=0,0,255
 ```
+ * Note that properties that ends with the same number define the custom tag
+  * *tPre[n]* and *tPost[n]* are required parameters, and specify the opening and closing parts of the custom tag in *template view*
+  * *jPre[n]* and *jPost[n]* are required parameters, and specify the opening and closing parts of the custom tag in *java code view*
+  * *color[n]* is optional, and defines the color of the custom tag in *template view*. Comma separated RGB color coordinates are expected here (between 0 and 255). The default color is 0,0,255.
+ * You can define as many custom tags as you want, but the numbering must be continuous 0,1,2...,n 
  * The custom tag is now translated to and from the custom method call in Java.
 ![HTML emitting example](screenshots/usage-html.png "HTML emitting example")
 
