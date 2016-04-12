@@ -30,7 +30,7 @@ public class ColorManager {
 		}
 		return ret;
 	}
-
+	
 	public void setDisplay(Display display) {
 		this.display=display;
 	}

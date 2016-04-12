@@ -10,14 +10,16 @@ public class RTemplateTagType {
 	private String javaPost;
 	private String templatePre;
 	private String templatePost;
+	private String color;
 
 	public RTemplateTagType(String javaPre, String javaPost,
-			String templatePre, String templatePost) {
+			String templatePre, String templatePost, String color) {
 		super();
 		this.javaPre = javaPre;
 		this.javaPost = javaPost;
 		this.templatePre = templatePre;
 		this.templatePost = templatePost;
+		this.color = color;
 	}
 
 	public String getJavaPre() {
@@ -36,4 +38,7 @@ public class RTemplateTagType {
 		return templatePost;
 	}
 	
+	public String getColor() {
+		return color;
+	}
 }

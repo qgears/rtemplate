@@ -126,10 +126,11 @@ public class TemplateSequences {
 		String jPost=props.getProperty("jPost"+i);
 		String tPre=props.getProperty("tPre"+i);
 		String tPost=props.getProperty("tPost"+i);
+		String color = props.getProperty("color"+i,"0,0,255");
 		if(notEmpty(jPre)&&notEmpty(jPost)&&
 				notEmpty(tPre)&&notEmpty(tPost))
 		{
-			return new RTemplateTagType(jPre, jPost, tPre, tPost);
+			return new RTemplateTagType(jPre, jPost, tPre, tPost,color);
 		}
 		return null;
 	}

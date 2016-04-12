@@ -109,7 +109,7 @@ public class RTemplateReconcileStrategy implements IReconcilingStrategy {
 				{
 					StyleRange sr=new StyleRange();
 					sr.foreground=
-						colorManager.getColor(0, 0, 255);
+						((LinePartCustom) lp).getColor(colorManager);
 					sr.fontStyle=SWT.BOLD;
 					sr.start=lp.getFrom();
 					sr.length=lp.getLength();
