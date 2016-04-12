@@ -38,19 +38,19 @@ public class HTMLReportOutputTemplate extends RAbstractTemplatePart
 		}
 		try {
 			write("<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<style>\n");
-			TextWithTooltipLinks.generateCSS(templateState.out);
-			TextWithTooltipLinks.generateScripts(templateState.out);
+			TextWithTooltipLinks.generateCSS(templateState.getOut());
+			TextWithTooltipLinks.generateScripts(templateState.getOut());
 			write("\n<title>");
 			writeObject(title);
 			write("</title>\n</head>\n<body>\n<h1>");
 			writeObject(title);
 			write("</h1>\n");
-			twt.generateString(templateState.out);
+			twt.generateString(templateState.getOut());
 			write("</body>\n</html>\n");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return templateState.out.toString();
+		return templateState.getOut().toString();
 	}
 }

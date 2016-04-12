@@ -55,7 +55,7 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 		new TextWithTooltipLinks("").generateScripts_(output);
 	}
 	private void generateScripts_(StringBuilder output) throws IOException {
-		templateState.out=output;
+		templateState.setOut(output);
 		write("<script>\nfunction toggle(elementId, toggleButtonId) {\n\tvar ele = document.getElementById(elementId);\n\tif(ele.style.display == \"block\") {\n\t\tele.style.display = \"none\";\n\t}\n\telse {\n\t\tele.style.display = \"block\";\n\t}\n\tvar s = document.getElementById(toggleButtonId).innerHTML;\n\tif (s.search(\"show\") > 0) {\n\t\ts = s.replace(\"show\",\"hide\");\n\t} else {\n\t\ts = s.replace(\"hide\",\"show\");\n\t}\n\tdocument.getElementById(toggleButtonId).innerHTML = s;\n}\n</script>\n<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js\"></script>\n<script>\n\t$(function()\n\t{\n\t\t$('.tooltipButton').click(function(){\n\t\t\tvar visible = $(this).next().is(':visible');\n\t\t\t$('.tooltipContent').hide();\n\t\t\tif (visible) {\n\t\t\t\t$(this).next().hide();\n\t\t\t} else {\n\t\t\t\t$(this).next().show();\n\t\t\t}\n\t\t});\n\t\t$('.tooltipClose').click(\n\t\t\tfunction()\n\t\t\t{\n\t\t\t\tvar a=$(this).closest('div[class^=\"tooltipContent\"]');\n\t\t\t\ta.hide();\n\t\t\t});\n\t});\n</script>\n");
 	}
 	/**
@@ -71,7 +71,7 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 	}
 	private void generateCSS_(StringBuilder output) throws IOException
 	{
-		templateState.out=output;
+		templateState.setOut(output);
 		write("<style>\na {\n    color: #005B81;\n    text-decoration: none;\n}\na:hover {\n    color: #E32E00;\n    text-decoration: underline;\n    cursor: pointer;\n}\n.tooltip {\n\twhite-space:pre;\n\toutline:none;\n}\n.tooltipContent {\n\twhite-space: normal;\n   z-index:10;\n  \tline-height:16px;\n\tdisplay:inline;\n\tpadding:14px 20px;\n\twidth: auto;\n\tposition:absolute;\n\tcolor:#111;\n\tborder:1px solid #DCA;\n\tbackground:#fffAF0;\n}\n</style>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"/>\n");
 	}
 	/**
@@ -83,7 +83,7 @@ public class TextWithTooltipLinks extends RAbstractTemplatePart
 	public void generateString(StringBuilder output) throws IOException
 	{
 		lineNumber=1;
-		templateState.out=output;
+		templateState.setOut(output);
 		write("<pre>");
 		printLineNumberAndIncrement();
 		for(int i=0;i<src.length();++i)

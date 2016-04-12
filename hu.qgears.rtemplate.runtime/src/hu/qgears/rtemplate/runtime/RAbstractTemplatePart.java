@@ -1,5 +1,6 @@
 package hu.qgears.rtemplate.runtime;
 
+import javax.swing.plaf.SeparatorUI;
 
 /**
  * Generate code as template.
@@ -26,13 +27,8 @@ abstract public class RAbstractTemplatePart {
 	 */
 	public RAbstractTemplatePart(ICodeGeneratorContext codeGeneratorContext) {
 		super();
-		this.templateState=new TemplateState();
-		this.templateState.out=new StringBuilder();
+		this.templateState=new TemplateState(codeGeneratorContext.needReport());
 		this.codeGeneratorContext=codeGeneratorContext;
-		if(codeGeneratorContext.needReport())
-		{
-			this.templateState.tt=new TemplateTracker();
-		}
 	}
 	/**
 	 * Insert a string into the already generated code.
@@ -41,15 +37,8 @@ abstract public class RAbstractTemplatePart {
 	 */
 	final public void insert(int offset, String s, TemplateTracker instertedTT)
 	{
-		templateState.out.insert(offset, s);
-		for(DeferredTemplate d:templateState.deferredParts)
-		{
-			d.parentInserted(offset, s.length());
-		}
-		if(templateState.tt!=null)
-		{
-			templateState.tt.insert(offset, s, instertedTT);
-		}
+		templateState.insert(offset, s,instertedTT);
+		
 	}
 	/**
 	 * Write a string by appending it to the output content.
@@ -57,10 +46,6 @@ abstract public class RAbstractTemplatePart {
 	 */
 	protected final void write(String string) {
 		templateState.append(string);
-		if(templateState.tt!=null)
-		{
-			templateState.tt.track(templateState.out.length(), string);
-		}
 	}
 	/**
 	 * Write an object by appending it to the output content.
@@ -70,10 +55,6 @@ abstract public class RAbstractTemplatePart {
 	protected final void writeObject(Object o) {
 		String string=""+o;
 		templateState.append(string);
-		if(templateState.tt!=null)
-		{
-			templateState.tt.track(templateState.out.length(), string);
-		}
 	}
 	/**
 	 * Get the hosting code generator context object.
@@ -100,7 +81,7 @@ abstract public class RAbstractTemplatePart {
 				executeDeferredTemplate(this, f, param);
 			}
 		};
-		templateState.deferredParts.add(dt);
+		templateState.addDeferred(dt);
 	}
 	/**
 	 * Execute a single deferred template.
@@ -116,7 +97,7 @@ abstract public class RAbstractTemplatePart {
 	 * output buffer.
 	 */
 	final protected void finishDeferredParts() {
-		for(DeferredTemplate t: templateState.deferredParts)
+		for(DeferredTemplate t: templateState.getDeferredParts())
 		{
 			t.generate();
 		}
@@ -126,7 +107,7 @@ abstract public class RAbstractTemplatePart {
 	 * @return
 	 */
 	final public int getCurrentLength() {
-		return templateState.out.length();
+		return templateState.getOut().length();
 	}
 	/**
 	 * Substitute the current template state with the given state.
@@ -155,11 +136,12 @@ abstract public class RAbstractTemplatePart {
 	 */
 	final protected void finishCodeGeneration(String path) {
 		finishDeferredParts();
-		String o=templateState.out.toString();
+		String o=templateState.getOut().toString();
 		getCodeGeneratorContext().createFile(path, o);
-		if(getCodeGeneratorContext().needReport()&&templateState.tt!=null)
+		if(getCodeGeneratorContext().needReport()&&templateState.getTracker()!=null)
 		{
-			getCodeGeneratorContext().createReport(path, o, templateState.tt);
+			getCodeGeneratorContext().createReport(path, o, templateState.getTracker());
 		}
 	}
+	
 }

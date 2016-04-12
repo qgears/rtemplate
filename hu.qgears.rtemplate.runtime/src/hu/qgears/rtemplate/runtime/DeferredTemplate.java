@@ -44,9 +44,9 @@ abstract public class DeferredTemplate extends RAbstractTemplatePart
 		super(parent.getCodeGeneratorContext());
 		this.parent=parent;
 		offset=parent.getCurrentLength();
-		if(templateState.tt!=null)
+		if(templateState.getTracker()!=null)
 		{
-			templateState.tt.markFirstCall();
+			templateState.getTracker().markFirstCall();
 		}
 	}
 	/**
@@ -67,7 +67,7 @@ abstract public class DeferredTemplate extends RAbstractTemplatePart
 			parent.reset(ts);
 		}
 		finishDeferredParts();
-		parent.insert(offset, templateState.out.toString(), templateState.tt);
+		parent.insert(offset, templateState.getOut().toString(), templateState.getTracker());
 	}
 
 	/**
@@ -85,7 +85,7 @@ abstract public class DeferredTemplate extends RAbstractTemplatePart
 	 * @param length length of the inserted code.
 	 */
 	public void parentInserted(int offset2, int length) {
-		if(offset2<offset)
+		if(offset2<=offset)
 		{
 			offset+=length;
 		}

@@ -11,7 +11,7 @@ abstract public class RQuickTemplate extends RAbstractTemplatePart
 	public String generate()
 	{
 		doGenerate();
-		return templateState.out.toString();
+		return templateState.getOut().toString();
 	}
 	public void generateVoid() {
 		doGenerate();
