@@ -1,6 +1,5 @@
 package hu.qgears.rtemplate.runtime;
 
-import javax.swing.plaf.SeparatorUI;
 
 /**
  * Generate code as template.

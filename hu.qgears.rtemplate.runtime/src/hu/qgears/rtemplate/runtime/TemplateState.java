@@ -21,7 +21,22 @@ public class TemplateState {
 	private TemplateTracker tracker;
 	
 	private List<DeferredTemplate> deferredParts = new ArrayList<>();
-
+	/**
+	 * Create a new template state object that stores these objects.
+	 * @param out the output object where template output is written.
+	 * @param tracker This tracker is used to track stack trace of writes. null disables tracking. 
+	 */
+	public TemplateState(StringBuilder out, TemplateTracker tracker) {
+		this.out = out;
+		this.tracker = tracker;
+	}
+	/**
+	 * Create a new empty template state object with tracer enabled or not.
+	 * @param track false means {@link TemplateTracker} is not enabled and will not be created.
+	 */
+	public TemplateState(boolean track) {
+		this(new StringBuilder(), track?new TemplateTracker():null);
+	}
 	/**
 	 * Appends the given String to output, and also adds the current stacktrace
 	 * to the tracker (if it is setup)
@@ -38,16 +53,6 @@ public class TemplateState {
 		}
 		return this;
 	}
-
-	public TemplateState(StringBuilder out, TemplateTracker tracker) {
-		this.out = out;
-		this.tracker = tracker;
-	}
-
-	public TemplateState(boolean track) {
-		this(new StringBuilder(), new TemplateTracker());
-	}
-
 	/**
 	 * Debug feature to stop Java debugger when the codegenerator writes code
 	 * part specified as parameter.
