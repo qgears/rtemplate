@@ -47,7 +47,7 @@ public class TemplateTracker {
 	 * @param currentLengthAfterAppend the current length of the template buffer after the append is done
 	 * @param string the appended string
 	 */
-	public void track(int currentLengthAfterAppend, String string) {
+	public void track(int currentLengthAfterAppend, CharSequence string) {
 		int l=string.length();
 		int from=currentLengthAfterAppend-l;
 		StringBuilder ttLog=new StringBuilder();
@@ -65,7 +65,7 @@ public class TemplateTracker {
 	 * @param s the code to be inserted at the given offset.
 	 * @param instertedTT {@link TemplateTracker} of the inserted code.
 	 */
-	public void insert(int offset, String s, TemplateTracker instertedTT) {
+	public void insert(int offset, CharSequence s, TemplateTracker instertedTT) {
 		int insertedLength=s.length();
 		for(DecorationData dd: decorations)
 		{

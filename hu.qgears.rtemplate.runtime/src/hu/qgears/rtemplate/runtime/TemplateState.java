@@ -35,7 +35,7 @@ public class TemplateState {
 	 * @param track false means {@link TemplateTracker} is not enabled and will not be created.
 	 */
 	public TemplateState(boolean track) {
-		this(new StringBuilder(), track?new TemplateTracker():null);
+		this(new StringBuilder(), track ? new TemplateTracker() : null);
 	}
 	/**
 	 * Appends the given String to output, and also adds the current stacktrace
@@ -45,7 +45,7 @@ public class TemplateState {
 	 *            The string to append
 	 * @return 
 	 */
-	public TemplateState append(String string) {
+	public TemplateState append(CharSequence string) {
 		out.append(string);
 		checkBreakPoint(null);
 		if (tracker != null) {
@@ -53,11 +53,12 @@ public class TemplateState {
 		}
 		return this;
 	}
+
 	/**
 	 * Debug feature to stop Java debugger when the codegenerator writes code
 	 * part specified as parameter.
 	 */
-	private void checkBreakPoint(String expectedOutput) {
+	private void checkBreakPoint(CharSequence expectedOutput) {
 		// TODO breakpoint at a specific state of the output
 		if (expectedOutput != null && out.length() > expectedOutput.length()) {
 			String b = out.substring(out.length() - expectedOutput.length());
@@ -83,7 +84,7 @@ public class TemplateState {
 	}
 
 
-	public void insert(int offset, String s, TemplateTracker instertedTT) {
+	public void insert(int offset, CharSequence s, TemplateTracker instertedTT) {
 		out.insert(offset, s);
 		for(DeferredTemplate d:deferredParts)
 		{
