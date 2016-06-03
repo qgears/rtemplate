@@ -53,7 +53,7 @@ public class RTemplateReconcileStrategy implements IReconcilingStrategy {
 				IProject project=fei.getFile().getProject();
 				RTemplateBuilder tbld=new RTemplateBuilder();
 				tbld.loadConfiguration(project);
-				sequences=tbld.getTemplateSequences(project);
+				sequences=tbld.getTemplateSequences();
 			}
 		}
 		}catch(Exception e){

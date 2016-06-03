@@ -87,4 +87,29 @@
         id="hu.rtemplate.editor.RTemplateEditor">
   </editor>
  </extension>
+    <extension
+         point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+      <target
+            id="hu.qgears.rtemplateEditor"
+            name="RTemplate Hyperlink target">
+            <context type="org.eclipse.ui.texteditor.ITextEditor"/>
+      </target>
+ </extension>
+ <extension
+       point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+    <hyperlinkDetector
+          activate="true"
+          class="hu.qgears.rtemplate.action.HyperLinkFromTemplateToJava"
+          id="hu.rtemplate.template.to.java"
+          name="RTemaplate editor links"
+          targetId="hu.qgears.rtemplateEditor">
+    </hyperlinkDetector>
+    <hyperlinkDetector
+          activate="true"
+          class="hu.qgears.rtemplate.action.HyperLinkFromJavaToTemplate"
+          id="hu.rtemplate.links.java.to.template"
+          name="Java editor links to RTemplate editor"
+          targetId="org.eclipse.jdt.ui.javaCode">
+    </hyperlinkDetector>
+ </extension>
 </plugin>

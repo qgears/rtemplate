@@ -11,6 +11,15 @@ abstract public class LinePart {
 		this.length=length;
 	}
 
+	public LinePart(String content) {
+		this.content = content;
+		length = content.length();
+	}
+	
+	public void setFrom(int from) {
+		this.from = from;
+	}
+	
 	public String getContent() {
 		return content;
 	}

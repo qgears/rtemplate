@@ -6,5 +6,8 @@ public class LinePartTemplate extends LinePart {
 		super(content, from, length);
 		// TODO Auto-generated constructor stub
 	}
+	public LinePartTemplate(String content) {
+		super(content);
+	}
 
 }

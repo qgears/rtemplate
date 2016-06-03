@@ -1,14 +1,8 @@
 package hu.qgears.rtemplate.action;
 
-import hu.qgears.rtemplate.builder.RTemplateBuilder;
-import hu.qgears.rtemplate.internal.Activator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -18,9 +12,12 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
+import hu.qgears.rtemplate.builder.RTemplateBuilder;
+import hu.qgears.rtemplate.internal.Activator;
+
 public class ActionBrowsePair implements IViewActionDelegate, IActionDelegate {
-	Object selected;
-	IFile targetFile;
+	private Object selected;
+	private IFile targetFile;
 	@SuppressWarnings("unused")
 	private IViewPart view;
 	@Override
@@ -34,8 +31,7 @@ public class ActionBrowsePair implements IViewActionDelegate, IActionDelegate {
 			IDE.openEditor(
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(), targetFile, true);
 		} catch (Throwable e) {
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, 
-					Activator.PLUGIN_ID, "Error browsing to rtemplate pair"));
+			Activator.getDefault().logError("Error browsing to rtemplate pair",e);
 		}
 	}
 	
@@ -55,14 +51,7 @@ public class ActionBrowsePair implements IViewActionDelegate, IActionDelegate {
 					IResource f=(IResource)a.getAdapter(IResource.class);
 					if(f instanceof IFile)
 					{
-						RTemplateBuilder bld=new RTemplateBuilder(false);
-						bld.setProject(f.getProject());
-						try {
-							bld.initRTConfState();
-						} catch (CoreException e) {
-							Activator.getDefault().getLog().log(new Status(IStatus.ERROR, 
-									Activator.PLUGIN_ID, "Error parsing RTemplate configuration state"));
-						}
+						RTemplateBuilder bld= RTemplateBuilder.createBuilderOn(f);
 						targetFile=bld.getPair((IFile)f);
 						if(targetFile!=null)
 						{
@@ -73,8 +62,7 @@ public class ActionBrowsePair implements IViewActionDelegate, IActionDelegate {
 			}
 		}catch(Throwable e)
 		{
-			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, 
-					Activator.PLUGIN_ID, "Error browsing to rtemplate pair"));
+			Activator.getDefault().logError("Error browsing to rtemplate pair",e);
 		}
 	}
 }

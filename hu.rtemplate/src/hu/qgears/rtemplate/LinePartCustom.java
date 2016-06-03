@@ -22,5 +22,9 @@ public class LinePartCustom extends LinePart {
 			return colorManager.getColor(0, 0,255);
 		}
 	}
+	public LinePartCustom(RTemplateTagType tagType, String content){
+		super(content);
+		this.tagType=tagType;
+	}
 
 }

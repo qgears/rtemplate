@@ -8,5 +8,9 @@ public class LinePartCode extends LinePart {
 		super(content, from, length);
 		this.isAlradyPrefixed=isAlradyPrefixed;
 	}
+	
+	public LinePartCode(String content){
+		super(content);
+	} 
 
 }

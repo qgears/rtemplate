@@ -1,12 +1,17 @@
 package hu.qgears.rtemplate.editor;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
 public class RTemplateSourceViewerConfiguration extends
-		SourceViewerConfiguration {
+		TextSourceViewerConfiguration {
 	RTemplateEditor editor;
 	ColorManager colorManager;
 	public RTemplateSourceViewerConfiguration(RTemplateEditor editor, ColorManager colorManager) {
@@ -22,4 +27,19 @@ public class RTemplateSourceViewerConfiguration extends
 		rec=new MonoReconciler(coloring, false);
 		return rec;
 	}
+	
+
+	@Override
+	protected Map<String,IAdaptable> getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+		Map<String, IAdaptable> tt = new HashMap<String, IAdaptable>();
+		tt.put("hu.qgears.rtemplateEditor",editor);
+		return tt;
+	}
+	
+	@Override
+	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
+		//load hl detectors from extension points
+		return getRegisteredHyperlinkDetectors(sourceViewer);
+	}
+	
 }

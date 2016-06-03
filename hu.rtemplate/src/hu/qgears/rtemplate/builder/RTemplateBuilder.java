@@ -24,6 +24,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
 
 public class RTemplateBuilder {
 
@@ -361,8 +363,20 @@ public class RTemplateBuilder {
 	}
 	TemplateSequences sequences=new TemplateSequences();
 
-	public TemplateSequences getTemplateSequences(IProject selectedProject) {
+	public TemplateSequences getTemplateSequences() {
 		return sequences;
+	}
+	
+	public static RTemplateBuilder createBuilderOn(IResource file){
+		RTemplateBuilder bld=new RTemplateBuilder(false);
+		bld.setProject(file.getProject());
+		try {
+			bld.initRTConfState();
+			return bld;
+		} catch (CoreException e) {
+			Activator.getDefault().logError("Error parsing RTemplate configuration state",e);
+		}
+		return null;
 	}
 
 }

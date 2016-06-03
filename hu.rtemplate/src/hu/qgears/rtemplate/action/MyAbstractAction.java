@@ -51,7 +51,7 @@ public abstract class MyAbstractAction implements IActionDelegate2 {
 				tbld.loadConfiguration(selectedProject);
 				File javaDir=tbld.getJavaDir(selectedProject);
 				File templateDir=tbld.getTemplateDir(selectedProject);
-				TemplateSequences sequences=tbld.getTemplateSequences(selectedProject);
+				TemplateSequences sequences=tbld.getTemplateSequences();
 				new TransformDirectory(javaDir, templateDir, getDirection(), sequences).execute();
 				selectedProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}finally

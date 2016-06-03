@@ -9,4 +9,11 @@ public class LinePartSetTabsPrefix extends LinePart {
 		}catch(Exception e){}
 	}
 
+	public LinePartSetTabsPrefix(String content) {
+		super(content);
+		try{
+			newTab=Integer.parseInt(content);
+		}catch(Exception e){}
+	}
+
 }

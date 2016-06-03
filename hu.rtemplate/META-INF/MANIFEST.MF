@@ -4,10 +4,17 @@ Bundle-Name: RTemplate
 Bundle-SymbolicName: hu.rtemplate;singleton:=true
 Bundle-Version: 2.1.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.core.runtime,org.apache.ant,org.eclipse.ui
- ,org.eclipse.core.runtime,org.eclipse.jface.text,org.eclipse.core.res
- ources,org.eclipse.ui.editors,org.eclipse.ui.ide
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.ant,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.core.resources,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.workbench.texteditor
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: hu.qgears.rtemplate.internal.Activator
 Export-Package: hu.qgears.rtemplate,
+ hu.qgears.rtemplate.ast,
  hu.qgears.rtemplate.task

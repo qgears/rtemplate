@@ -1,6 +1,8 @@
 package hu.qgears.rtemplate;
 
 import hu.qgears.rtemplate.apache.EscapeString;
+import hu.qgears.rtemplate.ast.JavaToTemplateAST;
+import hu.qgears.rtemplate.ast.TemplateToJavaAST;
 import hu.qgears.rtemplate.util.UtilString;
 
 import java.util.ArrayList;
@@ -25,16 +27,21 @@ public class RTemplate {
 	}
 	
 	int lastTemplatePrefixTabs = 0;
+
 	/**
 	 * Parse a java file and generate template file.
 	 * @param java
 	 * @return
 	 */
 	public String javaToTemplate(String java) {
-		StringBuilder ret = new StringBuilder();
+		return parseJavaToTemplate(java).toString();
+	}
+	public JavaToTemplateAST parseJavaToTemplate(String java) {
+		JavaToTemplateAST ast = new JavaToTemplateAST();
 		List<Integer> lineIndexes=new ArrayList<Integer>();
 		List<String> lines = UtilString.splitLines(java, lineIndexes);
 		for (String line : lines) {
+			LinePartCode javaLine = new LinePartCode(line+"\n");
 			int prefixTabs = getPrefixTabs(line);
 			boolean processed=false;
 			for(RTemplateTagType tagType: sequences.tagTypes)
@@ -48,9 +55,10 @@ public class RTemplate {
 							+ tagType.getJavaPre().length(), line.length()
 							- tagType.getJavaPost().length());
 					printPrefixTabsNumberIfNecessary(
-							prefixTabs, ret);
-					ret.append(tagType.getTemplatePre()+
-							templateContent+tagType.getTemplatePost());
+							prefixTabs, ast);
+					String content = tagType.getTemplatePre()+
+							templateContent+tagType.getTemplatePost();
+					ast.addJavaLinePart(javaLine,new LinePartCustom(tagType, content));
 					processed=true;
 					break;
 				}
@@ -65,8 +73,8 @@ public class RTemplate {
 					templateContent = EscapeString
 							.unescapeJava(templateContent);
 					printPrefixTabsNumberIfNecessary(
-							prefixTabs, ret);
-					ret.append(templateContent);
+							prefixTabs, ast);
+					ast.addJavaLinePart(javaLine,new LinePartTemplate(templateContent));
 				}else if(isCodeOut(line, sequences.jOutPre,
 						sequences.jOutPost,
 						prefixTabs))
@@ -75,36 +83,34 @@ public class RTemplate {
 							+ sequences.jOutPre.length(), line.length()
 							- sequences.jOutPost.length());
 					printPrefixTabsNumberIfNecessary(
-							prefixTabs, ret);
-					ret.append(sequences.tTagPrint+templateContent+sequences.tCloseTag);
+							prefixTabs, ast);
+					ast.addJavaLinePart(javaLine,new LinePartCodeOut(sequences.tTagPrint+templateContent+sequences.tCloseTag));
 				} else {
 					if (line.endsWith(sequences.jLineNonBreakPost)) {
 						line = line.substring(prefixTabs, line.length()
 								- sequences.jLineNonBreakPost.length());
 						printPrefixTabsNumberIfNecessary(
-								prefixTabs, ret);
-						ret.append(sequences.tTagNonBreak);
-						ret.append(line);
-						ret.append(sequences.tCloseTag);
+								prefixTabs, ast);
+						String content = sequences.tTagNonBreak + line + sequences.tCloseTag;
+						ast.addJavaLinePart(javaLine,new LinePartCode(content));
 					} else {
-						ret.append(sequences.tJavaLinePre);
-						ret.append(line);
-						ret.append('\n');
+						String content = sequences.tJavaLinePre + line + '\n';
+						ast.addJavaLinePart(javaLine,new LinePartCode(content));
 					}
 				}
 			}
 		}
-		return ret.toString();
+		return ast;
 	}
 
 	private void printPrefixTabsNumberIfNecessary(
 			int prefixTabs,
-			StringBuilder ret) {
+			JavaToTemplateAST ast) {
 		if (prefixTabs != lastTemplatePrefixTabs&&!sequences.autoTab) {
 			lastTemplatePrefixTabs = prefixTabs;
-			ret.append(sequences.tTagTabs);
-			ret.append(prefixTabs);
-			ret.append(sequences.tCloseTag);
+			
+			String content = sequences.tTagTabs + prefixTabs + sequences.tCloseTag;
+			ast.addJavaLinePart(new LinePartCode(""),new LinePartCode(content));
 		}
 	}
 
@@ -160,13 +166,16 @@ public class RTemplate {
 	 * @return
 	 */
 	public String templateToJava(String temp) {
-		StringBuilder ret = new StringBuilder();
-		
+		TemplateToJavaAST ast = parseTemplateToJava(temp);
+		return ast.toString();
+	}
+	public TemplateToJavaAST parseTemplateToJava(String temp) {
 		List<LinePart> parts = parseTemplate(temp);
-		
+		TemplateToJavaAST ast = new TemplateToJavaAST();
 		int currentPrefixTabs = 0;
 		for (LinePart part : parts) {
 			if (part instanceof LinePartTemplate) {
+				StringBuilder ret = new StringBuilder();
 				for (int i = 0; i < currentPrefixTabs; ++i) {
 					ret.append('\t');
 				}
@@ -174,9 +183,12 @@ public class RTemplate {
 				ret.append(EscapeString.escapeJava(part.getContent()));
 				ret.append(sequences.jTemplatePost);
 				ret.append("\n");
+				ast.addTemplateLinePart(part, new LinePartCode(ret.toString()));
 			} else if (part instanceof LinePartSetTabsPrefix && !sequences.autoTab) {
 				currentPrefixTabs = ((LinePartSetTabsPrefix) part).newTab;
+				ast.addTemplateLinePart(part, new LinePartCode(""));
 			} else if (part instanceof LinePartCode) {
+				StringBuilder ret = new StringBuilder();
 				if (!((LinePartCode) part).isAlradyPrefixed) {
 					for (int i = 0; i < currentPrefixTabs; ++i) {
 						ret.append('\t');
@@ -187,8 +199,10 @@ public class RTemplate {
 				}
 				currentPrefixTabs=incrementPrefixTabsIfBracketOpen(currentPrefixTabs, part.content);
 				ret.append(part.content + "\n");
+				ast.addTemplateLinePart(part, new LinePartCode(ret.toString()));
 			} else if (part instanceof LinePartCustom)
 			{
+				StringBuilder ret = new StringBuilder();
 				LinePartCustom custom=(LinePartCustom) part;
 				for (int i = 0; i < currentPrefixTabs; ++i) {
 					ret.append('\t');
@@ -197,7 +211,9 @@ public class RTemplate {
 				ret.append(part.content);
 				ret.append(custom.getTagType().getJavaPost());
 				ret.append("\n");
+				ast.addTemplateLinePart(part, new LinePartCode(ret.toString()));
 			} else if (part instanceof LinePartCodeOut) {
+				StringBuilder ret = new StringBuilder();
 				for (int i = 0; i < currentPrefixTabs; ++i) {
 					ret.append('\t');
 				}
@@ -205,9 +221,10 @@ public class RTemplate {
 				ret.append(part.content);
 				ret.append(sequences.jOutPost);
 				ret.append("\n");
+				ast.addTemplateLinePart(part, new LinePartCode(ret.toString()));
 			}
 		}
-		return ret.toString();
+		return ast;
 	}
 	
 	private int incrementPrefixTabsIfBracketOpen(int currentPrefixTabs,

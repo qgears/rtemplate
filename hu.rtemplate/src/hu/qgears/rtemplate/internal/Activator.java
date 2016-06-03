@@ -1,6 +1,8 @@
 package hu.qgears.rtemplate.internal;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -45,6 +47,11 @@ public class Activator extends Plugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+	
+	public void logError(String message, Throwable e){
+		getLog().log(new Status(IStatus.ERROR, 
+				Activator.PLUGIN_ID, message,e));
 	}
 
 }
