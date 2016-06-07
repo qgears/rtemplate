@@ -43,8 +43,10 @@ public abstract class AbstractRTemplateHyperLinkDetector extends AbstractHyperli
 						IDocument doc = getDocument(textEditor);
 						if (doc != null){
 							IFile target = bld.getPair(file);
-							RTemplate parser = new RTemplate(bld.getTemplateSequences());
-							return createLinks(region, doc, file,target, parser);
+							if (target != null) {
+								RTemplate parser = new RTemplate(bld.getTemplateSequences());
+								return createLinks(region, doc, file,target, parser);
+							}
 						}
 					}
 				}
