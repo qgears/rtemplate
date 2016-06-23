@@ -80,7 +80,15 @@ abstract public class RAbstractTemplatePart {
 				executeDeferredTemplate(this, f, param);
 			}
 		};
+		setupDeferredTemplate(dt);
 		templateState.addDeferred(dt);
+	}
+	/**
+	 * Subclasses may override this method to achieve paremetrization of the deferred templates.
+	 * For example add a formatter to it.
+	 * @param dt
+	 */
+	protected void setupDeferredTemplate(DeferredTemplate dt) {
 	}
 	/**
 	 * Execute a single deferred template.
@@ -142,5 +150,11 @@ abstract public class RAbstractTemplatePart {
 			getCodeGeneratorContext().createReport(path, o, templateState.getTracker());
 		}
 	}
-	
+	/**
+	 * Accessor to the templateState object.
+	 * @return
+	 */
+	public TemplateState getTemplateState() {
+		return templateState;
+	}
 }

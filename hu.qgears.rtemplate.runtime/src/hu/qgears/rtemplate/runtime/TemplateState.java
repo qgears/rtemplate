@@ -21,6 +21,7 @@ public class TemplateState {
 	private TemplateTracker tracker;
 	
 	private List<DeferredTemplate> deferredParts = new ArrayList<>();
+	private ITemplateFormatter formatter;
 	/**
 	 * Create a new template state object that stores these objects.
 	 * @param out the output object where template output is written.
@@ -46,6 +47,10 @@ public class TemplateState {
 	 * @return 
 	 */
 	public TemplateState append(CharSequence string) {
+		if(formatter!=null)
+		{
+			string=formatter.format(string);
+		}
 		out.append(string);
 		checkBreakPoint(null);
 		if (tracker != null) {
@@ -111,5 +116,31 @@ public class TemplateState {
 	public void setOut(StringBuilder out) {
 		this.out = out;
 	}
-	
+	/**
+	 * Append the output of a different template into this template at the current position.
+	 * @param toAppend
+	 */
+	public void append(TemplateState toAppend) {
+		String s=toAppend.getOut().toString();
+		int at=out.length();
+		out.append(s);
+		if(tracker!=null)
+		{
+			tracker.insert(at, s, toAppend.getTracker());
+		}
+	}
+	/**
+	 * Get the a formatter to format the output on the fly.
+	 * @return defult value is null. The user of the object may set it up.
+	 */
+	public ITemplateFormatter getFormatter() {
+		return formatter;
+	}
+	/**
+	 * Set up a formatter to format the output on the fly.
+	 * @param formatter can be null. Null means no formatting.
+	 */
+	public void setFormatter(ITemplateFormatter formatter) {
+		this.formatter = formatter;
+	}
 }
