@@ -9,5 +9,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modules>
 		<module>hu.rtemplate</module>
 		<module>hu.qgears.rtemplate.runtime</module>
+		<module>build/hu.qgears.rtemplate.p2</module>
 	</modules>
 </project>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+	<!-- R-Template category -->
+	<category-def name="R-Template" label="R-Template code generator" />
+	<category-def name="R-Template sources" label="R-Template code generator sources">
+		<description>Source bundles of R-Template tool</description>
+	</category-def>
+
+	<bundle id="hu.rtemplate">
+		<category name="R-Template" />
+	</bundle>
+	<bundle id="hu.qgears.rtemplate.runtime">
+		<category name="R-Template" />
+	</bundle>
+	<bundle id="hu.rtemplate.source">
+		<category name="R-Template sources" />
+	</bundle>
+	<bundle id="hu.qgears.rtemplate.runtime.source">
+		<category name="R-Template sources" />
+	</bundle>
+
+</site>
