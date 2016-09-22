@@ -1,5 +1,6 @@
 package hu.qgears.rtemplate.runtime;
 
+import java.util.StringTokenizer;
 
 /**
  * Generate code as template.
@@ -9,6 +10,7 @@ package hu.qgears.rtemplate.runtime;
 abstract public class RAbstractTemplatePart {
 	protected TemplateState templateState;
 	private ICodeGeneratorContext codeGeneratorContext;
+	
 	/**
 	 * Create a template part object that writes text into the
 	 * parent template's output.
@@ -144,12 +146,26 @@ abstract public class RAbstractTemplatePart {
 	final protected void finishCodeGeneration(String path) {
 		finishDeferredParts();
 		String o=templateState.getOut().toString();
+		logLongLines(o, 120);
 		getCodeGeneratorContext().createFile(path, o);
 		if(getCodeGeneratorContext().needReport()&&templateState.getTracker()!=null)
 		{
 			getCodeGeneratorContext().createReport(path, o, templateState.getTracker());
 		}
 	}
+	
+	private void logLongLines (String output, int maxLength) {
+		StringTokenizer st = new StringTokenizer(output, "\n");
+		int lineNum = 1;
+		while (st.hasMoreTokens()) {
+			String line = st.nextToken();
+			if (line != null && line.length() > maxLength) {
+				System.out.println("Too long line, length: " + line.length() + ", lineNum: " + lineNum + ". Line:\n" + line);
+			}
+			lineNum++;
+		}
+	}
+	
 	/**
 	 * Accessor to the templateState object.
 	 * @return
