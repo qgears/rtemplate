@@ -146,7 +146,7 @@ abstract public class RAbstractTemplatePart {
 	final protected void finishCodeGeneration(String path) {
 		finishDeferredParts();
 		String o=templateState.getOut().toString();
-		logLongLines(o, 120);
+		//logLongLines(path, o, 120);
 		getCodeGeneratorContext().createFile(path, o);
 		if(getCodeGeneratorContext().needReport()&&templateState.getTracker()!=null)
 		{
@@ -154,14 +154,20 @@ abstract public class RAbstractTemplatePart {
 		}
 	}
 	
-	private void logLongLines (String output, int maxLength) {
+	private void logLongLines (String path, String output, int maxLength) {
 		StringTokenizer st = new StringTokenizer(output, "\n");
 		int lineNum = 1;
 		while (st.hasMoreTokens()) {
 			String line = st.nextToken();
-			if (line != null && line.length() > maxLength) {
-				System.out.println("Too long line, length: " + line.length() + ", lineNum: " + lineNum + ". Line:\n" + line);
-			}
+			// Logging too long lines
+			/*if (line != null && line.length() > maxLength) {
+				System.out.println("Too long line, path: " + path + ", length: " + line.length() + ", lineNum: " + lineNum + ". Line:\n" + line);
+			}*/
+			
+			// Logging lines with whitespaces at the end
+			/*if (line != null && (line.endsWith(" ") || line.endsWith("\t"))) {
+				System.out.println("Line ends with whitespace, path: " + path + ", lineNum: " + lineNum + ". Line:\n" + line);
+			}*/
 			lineNum++;
 		}
 	}
