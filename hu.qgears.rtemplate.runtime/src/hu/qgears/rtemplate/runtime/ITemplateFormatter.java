@@ -16,4 +16,11 @@ public interface ITemplateFormatter {
 	 * @return the formatted string that should be appended to the template output buffer
 	 */
 	CharSequence format(CharSequence string);
+	/**
+	 * This method is called after each template append was executed and the template is being closed
+	 * or before adding deferred template parts.
+	 * This method call flushes the current state of the template formatter in case there are some characters stored in it.
+	 * @return characters stored in the formatter. null is allowed.
+	 */
+	CharSequence flush();
 }

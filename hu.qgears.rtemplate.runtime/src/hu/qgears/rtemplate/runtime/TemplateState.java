@@ -143,4 +143,23 @@ public class TemplateState {
 	public void setFormatter(ITemplateFormatter formatter) {
 		this.formatter = formatter;
 	}
+	/**
+	 * Flush the remaining characters from the formatting template state
+	 * in case it has some remaining characters stored.
+	 * @return this object
+	 */
+	public TemplateState flush() {
+		if(formatter!=null)
+		{
+			CharSequence string=formatter.flush();
+			if(string!=null)
+			{
+				out.append(string);
+				if (tracker != null) {
+					tracker.track(out.length(), string);
+				}
+			}
+		}
+		return this;
+	}
 }

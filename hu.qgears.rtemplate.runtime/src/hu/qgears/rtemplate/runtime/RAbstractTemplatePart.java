@@ -1,6 +1,5 @@
 package hu.qgears.rtemplate.runtime;
 
-import java.util.StringTokenizer;
 
 /**
  * Generate code as template.
@@ -10,7 +9,6 @@ import java.util.StringTokenizer;
 abstract public class RAbstractTemplatePart {
 	protected TemplateState templateState;
 	private ICodeGeneratorContext codeGeneratorContext;
-	
 	/**
 	 * Create a template part object that writes text into the
 	 * parent template's output.
@@ -76,6 +74,7 @@ abstract public class RAbstractTemplatePart {
 	 */
 	final protected void deferred(final Consumer<Object[]> f, final Object ... param)
 	{
+		templateState.flush();
 		DeferredTemplate dt=new DeferredTemplate(this) {
 			@Override
 			protected void g() {
@@ -144,32 +143,23 @@ abstract public class RAbstractTemplatePart {
 	 *  * Store the output code generation report (if this feature is enabled by the codeGeneratorContext)
 	 */
 	final protected void finishCodeGeneration(String path) {
+		templateState.flush();
 		finishDeferredParts();
 		String o=templateState.getOut().toString();
-		//logLongLines(path, o, 120);
+		validateOutput(o);
 		getCodeGeneratorContext().createFile(path, o);
 		if(getCodeGeneratorContext().needReport()&&templateState.getTracker()!=null)
 		{
 			getCodeGeneratorContext().createReport(path, o, templateState.getTracker());
 		}
 	}
-	
-	private void logLongLines (String path, String output, int maxLength) {
-		StringTokenizer st = new StringTokenizer(output, "\n");
-		int lineNum = 1;
-		while (st.hasMoreTokens()) {
-			String line = st.nextToken();
-			// Logging too long lines
-			/*if (line != null && line.length() > maxLength) {
-				System.out.println("Too long line, path: " + path + ", length: " + line.length() + ", lineNum: " + lineNum + ". Line:\n" + line);
-			}*/
-			
-			// Logging lines with whitespaces at the end
-			/*if (line != null && (line.endsWith(" ") || line.endsWith("\t"))) {
-				System.out.println("Line ends with whitespace, path: " + path + ", lineNum: " + lineNum + ". Line:\n" + line);
-			}*/
-			lineNum++;
-		}
+	/**
+	 * This method is called just before creating the file. This is the final result of code generation that can be validated
+	 * against well formedness rules if necessary.
+	 * @param o
+	 */
+	protected void validateOutput(String o)
+	{
 	}
 	
 	/**
