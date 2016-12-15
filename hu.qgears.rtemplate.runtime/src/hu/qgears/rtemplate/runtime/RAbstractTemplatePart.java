@@ -71,8 +71,9 @@ abstract public class RAbstractTemplatePart {
 	 * 
 	 * @param f
 	 * @param param
+	 * @return the created deferred template. It will be automatically executed when the template is finished or can be manually executed at any time later on.
 	 */
-	final protected void deferred(final Consumer<Object[]> f, final Object ... param)
+	final protected DeferredTemplate deferred(final Consumer<Object[]> f, final Object ... param)
 	{
 		templateState.flush();
 		DeferredTemplate dt=new DeferredTemplate(this) {
@@ -83,6 +84,7 @@ abstract public class RAbstractTemplatePart {
 		};
 		setupDeferredTemplate(dt);
 		templateState.addDeferred(dt);
+		return dt;
 	}
 	/**
 	 * Subclasses may override this method to achieve paremetrization of the deferred templates.
@@ -109,6 +111,7 @@ abstract public class RAbstractTemplatePart {
 		{
 			t.generate();
 		}
+		templateState.getDeferredParts().clear();
 	}
 	/**
 	 * get the current length of the output buffer.
