@@ -6,6 +6,7 @@ import hu.qgears.rtemplate.ast.TemplateToJavaAST;
 import hu.qgears.rtemplate.util.UtilString;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -176,13 +177,18 @@ public class RTemplate {
 		for (LinePart part : parts) {
 			if (part instanceof LinePartTemplate) {
 				StringBuilder ret = new StringBuilder();
-				for (int i = 0; i < currentPrefixTabs; ++i) {
-					ret.append('\t');
+				String content=part.getContent();
+				List<String> pieces=splitIfTooLong(content);
+				for(String p:pieces)
+				{
+					for (int i = 0; i < currentPrefixTabs; ++i) {
+						ret.append('\t');
+					}
+					ret.append(sequences.jTemplatePre);
+					ret.append(EscapeString.escapeJava(p));
+					ret.append(sequences.jTemplatePost);
+					ret.append("\n");
 				}
-				ret.append(sequences.jTemplatePre);
-				ret.append(EscapeString.escapeJava(part.getContent()));
-				ret.append(sequences.jTemplatePost);
-				ret.append("\n");
 				ast.addTemplateLinePart(part, new LinePartCode(ret.toString()));
 			} else if (part instanceof LinePartSetTabsPrefix && !sequences.autoTab) {
 				currentPrefixTabs = ((LinePartSetTabsPrefix) part).newTab;
@@ -226,7 +232,24 @@ public class RTemplate {
 		}
 		return ast;
 	}
-	
+	// 16384 Java allows 65536 bytes. Hopefully it will never be more bytes in UTF-8.
+	private final int maxStringLength=16384;
+	private List<String> splitIfTooLong(String content) {
+		if(content.length()<maxStringLength)
+		{
+			return Collections.singletonList(content);
+		}
+		List<String> ret=new ArrayList<>();
+		int n=0;
+		while(n<content.length())
+		{
+			int k=Math.min(content.length()-n, maxStringLength);
+			String p=content.substring(n, n+k);
+			ret.add(p);
+			n+=k;
+		}
+		return ret;
+	}
 	private int incrementPrefixTabsIfBracketOpen(int currentPrefixTabs,
 			String line) {
 		if(sequences.autoTab)
