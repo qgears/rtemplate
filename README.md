@@ -28,7 +28,7 @@ RTemplate is a simple template language with an Eclipse based editor. It is main
 
 
 ## Install
- * Use this update site to install RTemplate into Eclipse: http://qgears.com/opensource/updates/
+ * Use this update site to install RTemplate into Eclipse: https://qgears.com/opensource/updates/
  * In the Install dialog Group items by category must be selected
  * Select Q-Gears tools/RTemplate
  * This installs the hu.rtemplate plugin into your Eclipse instance
