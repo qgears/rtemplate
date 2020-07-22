@@ -13,8 +13,8 @@
 
 	<properties>
 		<!-- The -source and -target arguments of Java compiler. -->
-		<java-src-version>1.7</java-src-version>
-		<java-trg-version>1.7</java-trg-version>
+		<java-src-version>1.8</java-src-version>
+		<java-trg-version>1.8</java-trg-version>
 	</properties>
 
 	<groupId>hu.qgears</groupId>
@@ -26,7 +26,7 @@
 		<repository>
 			<id>eclipse-mars-mirror</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/mars/</url>
+			<url>https://download.eclipse.org/releases/2020-03</url>
 		</repository>
 		<repository>
 			<id>qgears-opensource-repo</id>
