@@ -4,7 +4,7 @@ Bundle-Name: Runtime
 Bundle-SymbolicName: hu.qgears.rtemplate.runtime
 Bundle-Version: 3.1.0.qualifier
 Bundle-Vendor: Q-Gears Ltd. Hungary
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: hu.qgears.commons;bundle-version="2.0.0"
 Export-Package: hu.qgears.rtemplate.runtime,
  hu.qgears.rtemplate.runtime.html
