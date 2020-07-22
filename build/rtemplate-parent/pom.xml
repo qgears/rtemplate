@@ -13,8 +13,8 @@
 
 	<properties>
 		<!-- The -source and -target arguments of Java compiler. -->
-		<java-src-version>1.8</java-src-version>
-		<java-trg-version>1.8</java-trg-version>
+		<java-src-version>8</java-src-version>
+		<java-trg-version>8</java-trg-version>
 	</properties>
 
 	<groupId>hu.qgears</groupId>
