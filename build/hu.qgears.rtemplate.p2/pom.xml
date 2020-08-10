@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>hu.qgears</groupId>
 		<artifactId>rtemplate-parent</artifactId>
-		<version>3.2.0-SNAPSHOT</version>
+		<version>4.0.0-SNAPSHOT</version>
 		<relativePath>../rtemplate-parent</relativePath>
 	</parent>
 	<groupId>hu.qgears</groupId>
 	<artifactId>hu.qgears.rtempalte.p2</artifactId>
-	<version>3.2.0-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>eclipse-repository</packaging>
 	
 	<properties>
