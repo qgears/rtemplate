@@ -4,6 +4,8 @@ import hu.qgears.rtemplate.util.UtilFile;
 import hu.qgears.rtemplate.util.UtilResource;
 import hu.qgears.rtemplate.util.UtilString;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -71,9 +73,27 @@ public class FileListBuilder extends IncrementalProjectBuilder {
 		files.add("# Resources in binary:");
 		files.addAll(this.files);
 		String filesStr = UtilString.concat(files, "", "\n", "\n");
+		String outputFilePath="fileList.txt"; // The default output file path when not specified otherwise
+		try
+		{
+			IFile fileListConf=getProject().getFile("fileList.conf");
+			try(InputStream is=fileListConf.getContents(true))
+			{
+				Properties props = new Properties();
+				props.load(new InputStreamReader(is, fileListConf.getCharset(true)));
+				outputFilePath=props.getProperty("outputFile");
+			}
+		}catch(Exception e)
+		{
+			// Throw on in some possible form: Eclipse will log the problem
+			//if (e instanceof CoreException) {
+			//	throw (CoreException) e;
+			//}
+			//throw new RuntimeException(e);
+		}
 		if(!filesStr.equals(oldContent))
 		{
-			IFile out = getProject().getFile("fileList.txt");
+			IFile out = getProject().getFile(outputFilePath);
 			UtilResource.saveFile(out, filesStr);
 		}
 		oldContent=filesStr;
@@ -86,7 +106,6 @@ public class FileListBuilder extends IncrementalProjectBuilder {
 		files = new TreeSet<String>();
 		parseProjectSetup(project);
 		project.accept(new IResourceVisitor() {
-
 			@Override
 			public boolean visit(IResource res) throws CoreException {
 				visitResource(res);
@@ -137,6 +156,8 @@ public class FileListBuilder extends IncrementalProjectBuilder {
 		if (classpath!=null&&classpath.length() > 0) {
 			try {
 				SAXParserFactory factory = SAXParserFactory.newInstance();
+				factory.setValidating(false);
+				factory.setXIncludeAware(false);
 				SAXParser saxParser = factory.newSAXParser();
 				ClassPathHandler handler = new ClassPathHandler();
 				saxParser.parse(new InputSource(new StringReader(classpath)), handler);
