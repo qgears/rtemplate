@@ -1,10 +1,17 @@
 Manifest-Version: 1.0
+Bnd-LastModified: 1786462219437
+Build-Jdk: 21.0.11
+Built-By: agostoni
+Bundle-Description: The hu.qgears.rtemplate.runtime bundle.
 Bundle-ManifestVersion: 2
-Bundle-Name: Runtime
+Bundle-Name: hu.qgears.rtemplate.runtime
 Bundle-SymbolicName: hu.qgears.rtemplate.runtime
-Bundle-Version: 4.0.0.qualifier
-Bundle-Vendor: Q-Gears Ltd. Hungary
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: hu.qgears.commons;bundle-version="2.0.0"
-Export-Package: hu.qgears.rtemplate.runtime,
- hu.qgears.rtemplate.runtime.html
+Bundle-Version: 4.1.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: hu.qgears.rtemplate.runtime;version="2.0.0.SNAPSHOT";use
+ s:="hu.qgears.rtemplate.runtime.html",hu.qgears.rtemplate.runtime.html;
+ version="2.0.0.SNAPSHOT";uses:="hu.qgears.rtemplate.runtime"
+Import-Package: hu.qgears.commons;version="[12.5,13)"
+Originally-Created-By: Apache Maven Bundle Plugin
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=11))"
+Tool: Bnd-2.3.0.201405100607

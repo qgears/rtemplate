@@ -18,3 +18,7 @@ target/
 bin/
 #repo builder ref
 build/repository-builder
+#Experiment with flattened poms
+**/.flattened-pom.xml
+hu.rtemplate/.settings/
+**/pom.xml.versionsBackup

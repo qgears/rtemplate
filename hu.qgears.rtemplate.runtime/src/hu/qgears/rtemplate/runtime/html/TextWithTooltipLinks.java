@@ -19,7 +19,7 @@ import java.util.List;
  * annotated HTML content.
  * 
  * @author rizsi
- *
+ * 
  */
 public class TextWithTooltipLinks extends RAbstractTemplatePart
 {
