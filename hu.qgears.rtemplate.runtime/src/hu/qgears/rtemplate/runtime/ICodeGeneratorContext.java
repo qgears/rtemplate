@@ -1,19 +1,28 @@
 package hu.qgears.rtemplate.runtime;
 
 /**
- * Code generator's connection to the outer worls.
- * @author rizsi
- *
+ * Code generator's connection to the outer worlds.
  */
 public interface ICodeGeneratorContext {
 
 	/**
 	 * Do we generate code generation report HTML files that allow tracking the generated code to the
-	 * Java program line that has preinted that line.
+	 * Java program line that has printed that line.
 	 * @return
 	 */
 	boolean needReport();
 
+	/**
+	 * Do we generate code generation report HTML files that allow tracking the generated code to the
+	 * Java program line that has printed that line.
+	 * @param path The path that we ask whether we need debug report for.
+	 * @return
+	 */
+	default boolean needReport(String path)
+	{
+		return needReport();
+	}
+	
 	/**
 	 * Create code generation output file.
 	 * @param path path of output

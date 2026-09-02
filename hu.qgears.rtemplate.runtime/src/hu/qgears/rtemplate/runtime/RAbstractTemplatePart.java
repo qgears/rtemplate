@@ -30,6 +30,16 @@ abstract public class RAbstractTemplatePart {
 		this.codeGeneratorContext=codeGeneratorContext;
 	}
 	/**
+	 * Create a template part object that can be used to generate code into an
+	 * output buffer.
+	 * @param codeGeneratorContext
+	 */
+	public RAbstractTemplatePart(ICodeGeneratorContext codeGeneratorContext, boolean track) {
+		super();
+		this.templateState=new TemplateState(track);
+		this.codeGeneratorContext=codeGeneratorContext;
+	}
+	/**
 	 * Insert a string into the already generated code.
 	 * All {@link TemplateTracker}s and {@link DeferredTemplate} parts offsets are updated with the insert.
 	 * @param s
